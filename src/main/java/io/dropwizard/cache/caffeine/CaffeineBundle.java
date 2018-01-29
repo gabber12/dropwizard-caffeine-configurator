@@ -39,11 +39,7 @@ public abstract class CaffeineBundle<K extends Enum<?>, T extends Configuration>
     private final ConcurrentHashMap<K, CacheLoader> loadersRegistry = new ConcurrentHashMap<>();
     private CaffeineFactory<K> caffeineFactory;
     private CacheConfig defaultCacheConfig;
-    private final Class<K> keyEnumType;
 
-    protected CaffeineBundle(Class<K> enumType) {
-        this.keyEnumType = enumType;
-    }
 
     @Override
     public void run(T configuration, Environment environment) throws Exception {
@@ -63,7 +59,6 @@ public abstract class CaffeineBundle<K extends Enum<?>, T extends Configuration>
             }
             log.info("Initializing Registry Key {}, Spec {}", key, value.getCaffeineSpec());
             Caffeine caffeine = caffeineFactory.fromConfig(value, key);
-            log.info("loading {}, {}", key, caffeine);
             caffeineRegistry.put(key, caffeine);
         });
 
@@ -71,16 +66,6 @@ public abstract class CaffeineBundle<K extends Enum<?>, T extends Configuration>
 
     public void addLoaders(Map<K, CacheLoader> loaders) {
         loadersRegistry.putAll(loaders);
-    }
-
-    private K getKeyFromString(String name) {
-        for (K val : keyEnumType.getEnumConstants()) {
-            if (val.name().equals(name)) {
-                return val;
-            }
-        }
-        log.warn("Invalid Cache name {}", name);
-        return null;
     }
 
     public Caffeine getCaffeineInstance(K cacheName) {
@@ -93,9 +78,8 @@ public abstract class CaffeineBundle<K extends Enum<?>, T extends Configuration>
     }
 
     public <C, V> LoadingCache<C, V> loadingCache(K cacheName) {
-        log.info("Trying to load loader for {}", cacheName);
         if (!loadersRegistry.containsKey(cacheName)) {
-            log.warn("Unbounded loader");
+            log.debug("Unbounded loader {}", cacheName);
             throw new RuntimeException("No Loaders provided for cacheName : " + cacheName.name());
         }
         CacheLoader<C, V> loader = loadersRegistry.get(cacheName);

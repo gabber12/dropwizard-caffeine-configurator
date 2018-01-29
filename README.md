@@ -37,7 +37,7 @@ Use the following maven dependency:
 
 #### Bootstrap
 ```java
-    private final CaffeineBundle caffeineBundle = new CaffeineBundle<CacheNames, AppConfiguration>(CacheName.class) {
+    private final CaffeineBundle caffeineBundle = new CaffeineBundle<CacheNames, AppConfiguration>() {
         @Override
         public CaffeineConfig getConfig(AppConfiguration configuration) {
             return configuration.getCacheConfig();
@@ -61,7 +61,7 @@ Use the following maven dependency:
     caffeineBundle.loadingCache(CacheNames.FIRST_CACHE, cacheLoader);
 ```
 
-### Configuration
+### Sample Configuration
 ```
 cacheConfig:
   metricsPrefix: io.dropwizard.reporting
@@ -73,3 +73,21 @@ cacheConfig:
       metricsEnabled: true
       caffeineSpec: maximumSize=500, expireAfterAccess=30s
 ```
+
+LICENSE
+-------
+
+Copyright 2018 Shubham Sharma <shubham.sha12@gmail.com>.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+

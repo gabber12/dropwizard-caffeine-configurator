@@ -36,7 +36,6 @@ public class MetricsStatsCounterTest {
             .recordStats(() -> metricsStatsCounter)
             .maximumSize(1)
             .build(new CacheLoader<String, String>() {
-                @CheckForNull
                 @Override
                 public String load(@Nonnull String key) throws Exception {
                     return key;
