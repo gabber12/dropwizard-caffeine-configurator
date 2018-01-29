@@ -1,3 +1,14 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=d4344b2944cd9798a57f4bbc29830f493e7d056806018f9c8c6e154c2a2b4805
 language: java
 jdk:
   - oraclejdk8
+script: mvn clean package cobertura:cobertura
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+after_script:
+  - ./cc-test-reporter after-build -t cobertura --exit-code $TRAVIS_TEST_RESULT
