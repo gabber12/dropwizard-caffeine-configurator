@@ -1,0 +1,12 @@
+cacheConfig:
+  metricsPrefix: io.dropwizard.reporting
+  defaultCacheConfig:
+    metricsEnabled: true
+    caffeineSpec: ""
+  cache:
+    CACHE_FIRST:
+      metricsEnabled: true
+      caffeineSpec: maximumSize=500, expireAfterAccess=30s
+    CACHE_SECOND:
+      metricsEnabled: false
+      caffeineSpec: maximumSize=500
